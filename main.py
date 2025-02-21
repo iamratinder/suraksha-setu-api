@@ -50,7 +50,7 @@ def initialize_vector_store(context_path: str):
         )
         texts = text_splitter.split_text(context_text)
         
-        embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        embeddings = HuggingFaceEmbeddings(model_name="paraphrase-MiniLM-L3-v2")
         vector_store = FAISS.from_texts(texts, embeddings)
         
         return vector_store
@@ -178,4 +178,5 @@ async def evidence_handling(query: Query):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8000))  # Default to 8000 if PORT is not set
+    uvicorn.run(app, host="0.0.0.0", port=port)
